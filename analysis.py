@@ -1,3 +1,14 @@
+"""
+This script performs exploratory data analysis (EDA) on the red wine dataset.
+
+Steps:
+1. Load the dataset and print the number of samples.
+2. Plot histograms for 'density' and other selected features.
+3. Compute descriptive statistics and median for 'density'.
+4. Calculate correlations between features and density.
+5. Print the correlation matrix.
+"""
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -5,58 +16,71 @@ import matplotlib.pyplot as plt
 df = pd.read_csv("winequality-red.csv", delimiter=';')
 
 num_samples = df.shape[0]
-
 print(f"Number of samples: {num_samples}")
 
-
+"""
+Plot histogram of 'density' column.
+Shows the distribution of density values in the dataset.
+"""
 plt.figure(figsize=(8, 6))
 plt.hist(df['density'], bins=30, edgecolor='black')
 plt.title('Distribution of Density')
 plt.xlabel('Density')
 plt.ylabel('Frequency')
-plt.grid (True)
+plt.grid(True)
 plt.show()
 
-density_stats = df ['density'].describe()
+"""
+Generate descriptive statistics and median for 'density'.
+"""
+density_stats = df['density'].describe()
 print("\nDescriptive statistics for 'density':")
 print(density_stats)
 
-median_density = df[ 'density'].median()
+median_density = df['density'].median()
 print(f"\nMedian of density: {median_density}")
 
+"""
+Plot histograms for selected features.
+Features: fixed acidity, volatile acidity, citric acid,
+          residual sugar, chlorides, free sulfur dioxide
+"""
 features = [
     'fixed acidity', 'volatile acidity', 'citric acid',
     'residual sugar', 'chlorides', 'free sulfur dioxide'
 ]
 
 plt.figure(figsize=(15, 5))
-for i, feature in enumerate(features [:3], 1):
-    plt.subplot (1, 3, i)
+for i, feature in enumerate(features[:3], 1):
+    plt.subplot(1, 3, i)
     plt.hist(df[feature], bins=30, edgecolor='black')
     plt.title(f'Distribution of {feature}')
     plt.xlabel(feature)
     plt.ylabel('Frequency')
-    plt.grid (True)
-plt.tight_layout ()
+    plt.grid(True)
+plt.tight_layout()
 plt.show()
 
-
-plt. figure(figsize=(15, 5))
-for i, feature in enumerate(features [3:], 1):
-    plt.subplot (1, 3, i)
-    plt.hist(df [feature], bins=30, edgecolor='black')
+plt.figure(figsize=(15, 5))
+for i, feature in enumerate(features[3:], 1):
+    plt.subplot(1, 3, i)
+    plt.hist(df[feature], bins=30, edgecolor='black')
     plt.title(f'Distribution of {feature}')
-    plt.xlabel (feature)
-    plt.ylabel ('Frequency')
-    plt.grid (True)
-plt.tight_layout ()
+    plt.xlabel(feature)
+    plt.ylabel('Frequency')
+    plt.grid(True)
+plt.tight_layout()
 plt.show()
 
+"""
+Compute correlations of each feature with 'density',
+and display the full correlation matrix.
+"""
 features.append('density')
 correlations_with_density = df[features].corr()['density'].drop('density')
 
 print("\nCorrelation of each feature with 'density':")
-print (correlations_with_density)
+print(correlations_with_density)
 
 correlation_matrix = df[features].corr()
 print("\nCorrelation Matrix:")
